@@ -4,13 +4,11 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 
 import com.joejoe2.mmseapp.activity.MainActivity;
 import com.joejoe2.mmseapp.sound.TTSService;
 import com.joejoe2.mmseapp.survey.data.Question;
 import com.joejoe2.mmseapp.survey.data.Survey;
-import com.microsoft.cognitiveservices.speech.SpeechSynthesisResult;
 
 import org.json.JSONException;
 
@@ -25,6 +23,8 @@ public abstract class QuestionActivity extends AppCompatActivity {
     Question question;
     int questionIndex;
     int timeLimitInSec=60;
+    Timer readingTimer, countDownTimer;
+    TimerTask readingTask, countDownTask;
     boolean needVoiceHint;
     boolean isSpeaking;
     String questionHint="";
@@ -91,30 +91,29 @@ public abstract class QuestionActivity extends AppCompatActivity {
      */
     void readQuestion(){
         isSpeaking=true;
-        new Timer().schedule(new TimerTask() {
+        readingTimer= new Timer();
+        readingTask=new TimerTask() {
             @Override
             public void run() {
                 TTSService.speak(questionHint);
                 isSpeaking=false;
             }
-        }, 1500);
+        };
+        readingTimer.schedule(readingTask, 1500);
     };
 
     /**
      * start to count down timeLimitInSec
      */
     void startTimer(){
-        new CountDownTimer(timeLimitInSec*1000, 1000) {
+        countDownTimer=new Timer();
+        countDownTask=new TimerTask() {
             @Override
-            public void onTick(long l) {
-                timeLimitInSec--;
-            }
-
-            @Override
-            public void onFinish() {
+            public void run() {
                 onTimeOut();
             }
-        }.start();
+        };
+        countDownTimer.schedule(countDownTask, timeLimitInSec*1000);
     }
 
     /**
@@ -140,9 +139,22 @@ public abstract class QuestionActivity extends AppCompatActivity {
     abstract void calculateResult();
 
     /**
-     *reserved for clean task before jump to next activity
+     *clean task before jump to next activity
      */
-    void cleanQuestion(){};
+    void cleanQuestion(){
+        if (readingTimer!=null){
+            readingTimer.cancel();
+            readingTask.cancel();
+            readingTimer=null;
+            readingTask=null;
+        }
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+            countDownTask.cancel();
+            countDownTimer=null;
+            countDownTask=null;
+        }
+    };
 
     /**
      *go to next question's activity, or result's activity when this is last question
@@ -181,7 +193,7 @@ public abstract class QuestionActivity extends AppCompatActivity {
         builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                goBackToMainActivity();
+                cancelSurvey();
             }
         });
         builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -192,6 +204,11 @@ public abstract class QuestionActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     };
+
+    void cancelSurvey(){
+        cleanQuestion();
+        goBackToMainActivity();
+    }
 
     /**
      * go back to MainActivity

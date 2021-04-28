@@ -174,7 +174,7 @@ public class TimeQuestionActivity extends QuestionActivity {
         }
         JSONObject ans=new JSONObject();
         try {
-            ans.put("year", userOption);
+            ans.put(question.getType(), userOption);
         } catch (JSONException e) {
             e.printStackTrace();
         }

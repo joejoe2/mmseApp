@@ -10,7 +10,7 @@ public class MMSEActivitySelector {
         if(question.getCategory().equals("time")){
             return ImplementedActivities.getTimeQuestionActivity();
         }else if(question.getCategory().equals("location")){
-            return ImplementedActivities.getNotImplemented();
+            return ImplementedActivities.getLocationQuestionActivity();
         }else if (question.getCategory().equals("memory")){
             return ImplementedActivities.getNotImplemented();
         }else if (question.getCategory().equals("attention")&&question.getType().equals("sub_seven")){
