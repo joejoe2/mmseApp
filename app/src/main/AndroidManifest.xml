@@ -24,7 +24,7 @@
         <activity android:name=".survey.questionactivity.mmse.RepeatQuestionActivity"></activity>
         <activity android:name=".survey.questionactivity.mmse.SentenceQuestionActivity"></activity>
         <activity android:name=".survey.questionactivity.mmse.SpaceQuestionActivity"></activity>
-        <activity android:name=".survey.questionactivity.mmse.SubSenvenQuestionActivity"></activity>
+        <activity android:name=".survey.questionactivity.mmse.SubSevenQuestionActivity"></activity>
         <activity android:name=".survey.questionactivity.mmse.ResultActivity"></activity>
         <activity
             android:name=".activity.MainActivity"

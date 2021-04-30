@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-public class SubSenvenQuestionActivity extends QuestionActivity {
+public class SubSevenQuestionActivity extends QuestionActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

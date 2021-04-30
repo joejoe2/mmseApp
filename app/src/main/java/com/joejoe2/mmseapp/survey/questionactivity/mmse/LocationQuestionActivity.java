@@ -149,9 +149,8 @@ public class LocationQuestionActivity extends QuestionActivity {
 
     private String[] makeOptions(int correctOption, String answer){
         String[] res=getPossibleOptions(answer);
-        int replace=new Random().nextInt(4);
-        res[0]=res[replace];
-        res[replace]=answer;
+        res[0]=res[correctOption];
+        res[correctOption]=answer;
         return res;
     }
 
@@ -184,7 +183,7 @@ public class LocationQuestionActivity extends QuestionActivity {
     @Override
     void initUI() {
         questionHintTextView=findViewById(R.id.question_hint);
-        questionHintTextView.setText(question.getId()+"\n"+questionHint);
+        questionHintTextView.setText(question.getId()+":"+questionHint);
         optionsButton=new Button[4];
         optionsButton[0]=findViewById(R.id.option1_button);
         optionsButton[1]=findViewById(R.id.option2_button);
@@ -199,7 +198,7 @@ public class LocationQuestionActivity extends QuestionActivity {
 
     @Override
     void setListeners() {
-        for (int i=0;i<4;i++){
+        for (int i=0;i<optionsButton.length;i++){
             final int index = i;
             optionsButton[i].setOnClickListener(new View.OnClickListener() {
                 @Override
