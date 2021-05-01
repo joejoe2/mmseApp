@@ -88,7 +88,7 @@ public class MemoryQuestionActivity extends QuestionActivity {
         list.add(3);
         list.add(4);
         list.add(5);
-        int[] res=new int[6];
+        int[] res=new int[3];
         Random r=new Random();
         for (int i=0;i<res.length;i++){
             res[i]=list.remove(r.nextInt(list.size()));
@@ -110,10 +110,20 @@ public class MemoryQuestionActivity extends QuestionActivity {
     }
 
     private String[] makeOptions(int[] correctOptionsIndex, String[] answer){
-        String[] res=getPossibleOptions(answer);
+        String[] res=new String[6];
+        String[] possible=getPossibleOptions(answer);
         for (int i=0;i<3;i++){
-            res[i]=res[correctOptionsIndex[i]];
             res[correctOptionsIndex[i]]=answer[i];
+        }
+        for (int i=3;i<6;i++){
+            int left=0;
+            while (left<6){
+                if (res[left]==null){
+                    res[left]=possible[i];
+                    break;
+                }
+                left++;
+            }
         }
         return res;
     }

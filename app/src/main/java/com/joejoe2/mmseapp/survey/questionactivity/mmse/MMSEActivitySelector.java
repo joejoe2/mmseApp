@@ -14,7 +14,7 @@ public class MMSEActivitySelector {
         }else if (question.getCategory().equals("memory")){
             return ImplementedActivities.getMemoryQuestionActivity();
         }else if (question.getCategory().equals("attention")&&question.getType().equals("sub_seven")){
-            return ImplementedActivities.getNotImplemented();
+            return ImplementedActivities.getSubSevenQuestionActivity();
         }else if (question.getCategory().equals("language")&&question.getType().equals("naming")){
             return ImplementedActivities.getNotImplemented();
         }else if (question.getCategory().equals("language")&&question.getType().equals("repeat")){

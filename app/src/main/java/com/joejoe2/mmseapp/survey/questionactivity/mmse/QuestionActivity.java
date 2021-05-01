@@ -54,7 +54,7 @@ public abstract class QuestionActivity extends AppCompatActivity {
     }
 
     /**
-     * setup data related to the question
+     * setup data related to the question (ex. prepare question hint)
      */
     void initQuestion(){
         questionHint=getQuestionHint();
