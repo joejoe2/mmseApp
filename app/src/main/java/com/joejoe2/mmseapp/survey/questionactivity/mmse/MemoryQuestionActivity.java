@@ -36,7 +36,7 @@ public class MemoryQuestionActivity extends QuestionActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //choose layout
-        setContentView(R.layout.activity_6choose3_question);
+        setContentView(R.layout.activity_six_options_question);
         //init
         init();
         //start question flow
