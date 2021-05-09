@@ -18,7 +18,7 @@ public class MMSEActivitySelector {
         }else if (question.getCategory().equals("language")&&question.getType().equals("naming")){
             return ImplementedActivities.getNamingQuestionActivity();
         }else if (question.getCategory().equals("language")&&question.getType().equals("repeat")){
-            return ImplementedActivities.getNotImplemented();
+            return ImplementedActivities.getRepeatQuestionActivity();
         }else if (question.getCategory().equals("language")&&question.getType().equals("make_sentence")){
             return ImplementedActivities.getNotImplemented();
         }else if (question.getCategory().equals("action")){

@@ -22,7 +22,7 @@ public abstract class QuestionActivity extends AppCompatActivity {
     Survey survey;
     Question question;
     int questionIndex;
-    int timeLimitInSec=60;
+    int timeLimitInSec=120;
     Timer readingTimer, countDownTimer;
     TimerTask readingTask, countDownTask;
     boolean needVoiceHint;

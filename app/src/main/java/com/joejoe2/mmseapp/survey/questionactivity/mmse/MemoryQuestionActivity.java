@@ -150,7 +150,7 @@ public class MemoryQuestionActivity extends QuestionActivity {
         if (question.getType().equals("mark")){
             return "現在我要告訴你三樣東西，請你要注意聽，之後請你把這三樣東西選出來";
         }else if (question.getType().equals("remind")){
-            return "剛才我有告訴你三樣東西，請你想想看這三個東西是什麼，並且把這三樣東西選出來";
+            return "剛才我有告訴你三樣東西，請你想想看並且把這三樣東西選出來";
         }else {
             return "";
         }
