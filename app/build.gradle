@@ -37,4 +37,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.microsoft.cognitiveservices.speech:client-sdk:1.16.0'
     implementation 'io.nlopez.smartlocation:library:3.3.3'
+    implementation 'org.jgrapht:jgrapht-core:1.4.0'
 }

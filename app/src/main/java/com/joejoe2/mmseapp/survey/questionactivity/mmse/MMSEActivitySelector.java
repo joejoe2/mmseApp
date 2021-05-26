@@ -20,11 +20,11 @@ public class MMSEActivitySelector {
         }else if (question.getCategory().equals("language")&&question.getType().equals("repeat")){
             return ImplementedActivities.getRepeatQuestionActivity();
         }else if (question.getCategory().equals("language")&&question.getType().equals("make_sentence")){
-            return ImplementedActivities.getNotImplemented();
+            return ImplementedActivities.getSentenceQuestionActivity();
         }else if (question.getCategory().equals("action")){
-            return ImplementedActivities.getNotImplemented();
+            return ImplementedActivities.getActionQuestionActivity();
         }else if (question.getCategory().equals("space")){
-            return ImplementedActivities.getNotImplemented();
+            return ImplementedActivities.getSpaceQuestionActivity();
         }else {
             return ImplementedActivities.getNotImplemented();
         }

@@ -53,6 +53,7 @@ public class LocationQuestionActivity extends QuestionActivity {
         setContentView(R.layout.activity_four_options_question);
         //init and start question flow
         loadingProgressDialog = new ProgressDialog(this);
+        loadingProgressDialog.setCancelable(false);
         loadingProgressDialog.setMessage("loading...");
         loadingProgressDialog.show();
         SmartLocation.with(this).location()

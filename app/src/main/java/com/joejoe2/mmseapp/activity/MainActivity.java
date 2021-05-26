@@ -32,6 +32,7 @@ import androidx.core.app.ActivityCompat;
 public class MainActivity extends AppCompatActivity {
     //data and flag
     private boolean needVoiceHint;
+    private static final int START_FROM_QUESTION=0;
     //ui
     Button startMMSESurveyButton;
     CheckBox voiceHintCheckBox;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loadingProgressDialog = new ProgressDialog(MainActivity.this);
+                loadingProgressDialog.setCancelable(false);
                 loadingProgressDialog.setMessage("loading...");
                 loadingProgressDialog.show();
                 SurveyService.getSurvey("mmse", "test", new OnCompleteCallable() {
@@ -87,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
                         if(success) {
                             try {
                                 Survey survey = new Survey(msg);
-                                ComponentName nextActivity= MMSEActivitySelector.getQuestionActivity(survey.getQuestion(0));
+                                ComponentName nextActivity= MMSEActivitySelector.getQuestionActivity(survey.getQuestion(START_FROM_QUESTION));
                                 Intent intent=new Intent();
                                 Bundle bundle=new Bundle();
                                 bundle.putString("survey", survey.toString());
-                                bundle.putInt("question index", 0);
+                                bundle.putInt("question index", START_FROM_QUESTION);
                                 bundle.putBoolean("voice hint", needVoiceHint);
                                 intent.putExtras(bundle);
                                 intent.setComponent(nextActivity);

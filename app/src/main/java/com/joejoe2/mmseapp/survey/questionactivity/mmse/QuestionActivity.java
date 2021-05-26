@@ -161,7 +161,7 @@ public abstract class QuestionActivity extends AppCompatActivity {
      */
     void toNextQuestion(){
         ComponentName nextActivity;
-        if (questionIndex<survey.getQuestionNum()){
+        if (questionIndex+1<survey.getQuestionNum()){
             nextActivity= MMSEActivitySelector.getQuestionActivity(survey.getQuestion(questionIndex+1));
         }else {
             nextActivity=MMSEActivitySelector.getResultActivity();
@@ -182,6 +182,12 @@ public abstract class QuestionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         tryCancelSurVey();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cleanQuestion();
     }
 
     /**
