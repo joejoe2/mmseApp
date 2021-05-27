@@ -90,7 +90,7 @@ public class RepeatQuestionActivity extends QuestionActivity {
     @Override
     void initUI() {
         questionHintTextView=findViewById(R.id.question_hint);
-        questionHintTextView.setText(question.getId()+":"+questionHint);
+        questionHintTextView.setText(questionHint);
         leftTimeTextView = findViewById(R.id.left_time);
         leftTimeTextView.setText(timeLimitInSec+"");
     }

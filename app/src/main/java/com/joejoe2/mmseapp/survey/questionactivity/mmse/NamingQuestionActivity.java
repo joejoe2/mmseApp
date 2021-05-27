@@ -129,7 +129,7 @@ public class NamingQuestionActivity extends QuestionActivity {
     @Override
     void initUI() {
         questionHintTextView=findViewById(R.id.question_hint);
-        questionHintTextView.setText(question.getId()+":"+questionHint);
+        questionHintTextView.setText(questionHint);
         optionsButton=new Button[4];
         optionsButton[0]=findViewById(R.id.option1_button);
         optionsButton[1]=findViewById(R.id.option2_button);

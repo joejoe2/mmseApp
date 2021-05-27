@@ -82,7 +82,7 @@ public class ActionQuestionActivity extends QuestionActivity {
     @Override
     void initUI() {
         questionHintTextView=findViewById(R.id.question_hint);
-        questionHintTextView.setText(question.getId()+":"+questionHint);
+        questionHintTextView.setText(questionHint);
         actionImage=findViewById(R.id.action_image);
         if (question.getType().equals("one_action")&&question.getData().optString("type").equals("shaking device")){
             actionImage.setImageResource(R.drawable.shaking_phone);

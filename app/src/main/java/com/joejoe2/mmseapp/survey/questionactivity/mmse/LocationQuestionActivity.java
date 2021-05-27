@@ -41,7 +41,6 @@ public class LocationQuestionActivity extends QuestionActivity {
     private String userOption="";
     //ui
     private TextView questionHintTextView;
-    private Button completeButton;
     private Button[] optionsButton;
     private TextView leftTimeTextView;
     private ProgressDialog loadingProgressDialog;
@@ -138,14 +137,16 @@ public class LocationQuestionActivity extends QuestionActivity {
     }
 
     private String getAnswer(){
+        String res=null;
         if (question.getType().equals("city")){
-            return addresses.get(0).getAdminArea();
+            res=addresses.get(0).getAdminArea();
         }else if (question.getType().equals("district")){
-            return addresses.get(0).getLocality();
+            res=addresses.get(0).getLocality();
         }else if (question.getType().equals("road")){
-            return addresses.get(0).getThoroughfare();
+            res=addresses.get(0).getThoroughfare();
         }
-        return "";
+
+        return res!=null?res:"unavailable";
     }
 
     private String[] makeOptions(int correctOption, String answer){
@@ -184,7 +185,7 @@ public class LocationQuestionActivity extends QuestionActivity {
     @Override
     void initUI() {
         questionHintTextView=findViewById(R.id.question_hint);
-        questionHintTextView.setText(question.getId()+":"+questionHint);
+        questionHintTextView.setText(questionHint);
         optionsButton=new Button[4];
         optionsButton[0]=findViewById(R.id.option1_button);
         optionsButton[1]=findViewById(R.id.option2_button);
