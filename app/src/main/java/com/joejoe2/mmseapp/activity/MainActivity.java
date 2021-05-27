@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,6 +29,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
-        checkPermission();
+        requestPermissions(checkPermissions());
         setListener();
     }
 
@@ -52,17 +56,52 @@ public class MainActivity extends AppCompatActivity {
         voiceHintCheckBox=findViewById(R.id.voice_hint_checkBox);
     }
 
-    private void checkPermission() {
-        ArrayList<String> permissions=new ArrayList<>();
-        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.RECORD_AUDIO);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        for (String permission : permissions) {
-            if(ActivityCompat.checkSelfPermission(MainActivity.this, permission)!= PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{permission},1);
+    private ArrayList<String> checkPermissions() {
+        String[] requiredPermissions=new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+        ArrayList<String> lackingPermissions=new ArrayList<>();
+        for (String permission : requiredPermissions) {
+            if(ActivityCompat.checkSelfPermission(MainActivity.this, permission)!=PackageManager.PERMISSION_GRANTED){
+                lackingPermissions.add(permission);
             }
         }
+        return lackingPermissions;
+    }
+
+    private void requestPermissions(ArrayList<String> permissions){
+        if (permissions!=null&&permissions.size()>0){
+            ActivityCompat.requestPermissions(MainActivity.this, permissions.toArray(new String[]{}),1);
+        }
+    }
+
+    private void requestPermissionsInSetting(ArrayList<String> permissions){
+        if (permissions!=null&&permissions.size()>0){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("請在設定中許可權限");
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    openSettingPage();
+                }
+            });
+            alertDialogBuilder.create().show();
+        }
+    }
+
+    private void openSettingPage(){
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        startActivity(intent);
     }
 
     private void setListener(){
@@ -79,6 +118,12 @@ public class MainActivity extends AppCompatActivity {
         startMMSESurveyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ArrayList<String> lackingPermissions=checkPermissions();
+                if (lackingPermissions.size()>0){
+                    requestPermissionsInSetting(lackingPermissions);
+                    return;
+                }
+
                 loadingProgressDialog = new ProgressDialog(MainActivity.this);
                 loadingProgressDialog.setCancelable(false);
                 loadingProgressDialog.setMessage("loading...");
