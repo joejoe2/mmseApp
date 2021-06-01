@@ -157,6 +157,7 @@ public class NamingQuestionActivity extends QuestionActivity {
             optionsButton[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (isSpeaking)return;
                     if (userOptions.add(options[index])){
                         optionsButton[index].setVisibility(View.INVISIBLE);
                         if (userOptions.size()==2){
