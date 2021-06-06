@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".survey.questionactivity.mmse.TimeQuestionActivity">
+    tools:context=".survey.mmse.questionactivity.TimeQuestionActivity">
 
     <TextView
         android:id="@+id/question_hint"
@@ -105,7 +105,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/time_hint" />
 
-    <com.joejoe2.mmseapp.util.DrawingView
+    <com.joejoe2.surveyapp.util.DrawingView
         android:id="@+id/canvas"
         android:layout_width="0dp"
         android:layout_height="0dp"
