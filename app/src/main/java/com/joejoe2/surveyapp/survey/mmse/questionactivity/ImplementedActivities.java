@@ -1,49 +1,48 @@
 package com.joejoe2.surveyapp.survey.mmse.questionactivity;
 
-import android.content.ComponentName;
-
 public class ImplementedActivities {
-    static ComponentName getTimeQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.TimeQuestionActivity");
+    
+    static Class getTimeQuestionActivity(){
+        return TimeQuestionActivity.class;
     }
 
-    static ComponentName getLocationQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.LocationQuestionActivity");
+    static Class getLocationQuestionActivity(){
+        return LocationQuestionActivity.class;
     }
 
-    static ComponentName getMemoryQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.MemoryQuestionActivity");
+    static Class getMemoryQuestionActivity(){
+        return MemoryQuestionActivity.class;
     }
 
-    static ComponentName getSubSevenQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.SubSevenQuestionActivity");
+    static Class getSubSevenQuestionActivity(){
+        return SubSevenQuestionActivity.class;
     }
 
-    static ComponentName getNamingQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.NamingQuestionActivity");
+    static Class getNamingQuestionActivity(){
+        return NamingQuestionActivity.class;
     }
 
-    static ComponentName getRepeatQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.RepeatQuestionActivity");
+    static Class getRepeatQuestionActivity(){
+        return RepeatQuestionActivity.class;
     }
 
-    static ComponentName getActionQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.ActionQuestionActivity");
+    static Class getActionQuestionActivity(){
+        return ActionQuestionActivity.class;
     }
 
-    static ComponentName getSentenceQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.SentenceQuestionActivity");
+    static Class getSentenceQuestionActivity(){
+        return SentenceQuestionActivity.class;
     }
 
-    static ComponentName getSpaceQuestionActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.SpaceQuestionActivity");
+    static Class getSpaceQuestionActivity(){
+        return SpaceQuestionActivity.class;
     }
 
-    static ComponentName getResultActivity(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.ResultActivity");
+    static Class getResultActivity(){
+        return ResultActivity.class;
     }
 
-    static ComponentName getNotImplemented(){
-        return new ComponentName("com.joejoe2.mmseapp", "com.joejoe2.mmseapp.survey.questionactivity.mmse.ResultActivity");
+    static Class getNotImplemented(){
+        return ResultActivity.class;
     }
 }

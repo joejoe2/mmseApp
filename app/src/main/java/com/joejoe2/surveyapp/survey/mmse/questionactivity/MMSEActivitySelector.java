@@ -1,12 +1,10 @@
 package com.joejoe2.surveyapp.survey.mmse.questionactivity;
 
-import android.content.ComponentName;
-
 import com.joejoe2.surveyapp.survey.mmse.data.Question;
 
 public class MMSEActivitySelector {
 
-    public static ComponentName getQuestionActivity(Question question){
+    public static Class getQuestionActivity(Question question){
         if(question.getCategory().equals("time")){
             return ImplementedActivities.getTimeQuestionActivity();
         }else if(question.getCategory().equals("location")){
@@ -30,7 +28,7 @@ public class MMSEActivitySelector {
         }
     }
 
-    public static ComponentName getResultActivity(){
+    public static Class getResultActivity(){
         return ImplementedActivities.getResultActivity();
     }
 }

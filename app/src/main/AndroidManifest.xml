@@ -17,16 +17,46 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".survey.mmse.questionactivity.TimeQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.LocationQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.MemoryQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.ActionQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.NamingQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.RepeatQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.SentenceQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.SpaceQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.SubSevenQuestionActivity"></activity>
-        <activity android:name=".survey.mmse.questionactivity.ResultActivity"></activity>
+        <activity
+            android:name=".survey.mmse.questionactivity.TimeQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".survey.mmse.questionactivity.LocationQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".survey.mmse.questionactivity.MemoryQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".survey.mmse.questionactivity.ActionQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".survey.mmse.questionactivity.NamingQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".survey.mmse.questionactivity.RepeatQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".survey.mmse.questionactivity.SentenceQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".survey.mmse.questionactivity.SpaceQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".survey.mmse.questionactivity.SubSevenQuestionActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".survey.mmse.questionactivity.ResultActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name="com.joejoe2.surveyapp.activity.MainActivity"
             android:screenOrientation="portrait"

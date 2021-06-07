@@ -65,7 +65,7 @@ public class SubSevenQuestionActivity extends QuestionActivity {
     String getQuestionHint() {
         if (question.getType().equals("sub_seven")){
             if (isInheritedSub){
-                return "那如果("+lastAns+")再減"+question.getData().optInt("subNum")+"等於多少?";
+                return "那如果再減"+question.getData().optInt("subNum")+"等於多少?";
             }else {
                 return "請問"+question.getData().optInt("startNum")+"減"+question.getData().optInt("subNum")+"等於多少?";
             }
@@ -157,27 +157,25 @@ public class SubSevenQuestionActivity extends QuestionActivity {
 
     @Override
     void toNextQuestion() {
-        Intent intent=new Intent();
+        Intent nextActivity=new Intent();
         Bundle bundle=new Bundle();
         bundle.putString("survey", survey.toString());
         bundle.putBoolean("voice hint", needVoiceHint);
         bundle.putBoolean("isInheritedSub", true);
         bundle.putInt("lastAns", userOption.equals("")?Integer.parseInt(answer):Integer.parseInt(userOption));
         bundle.putInt("subTimes", ++subTimes);
-        ComponentName nextActivity;
         if (questionIndex<survey.getQuestionNum()){
             if (subTimes<=5){
-                nextActivity= MMSEActivitySelector.getQuestionActivity(survey.getQuestion(questionIndex));
+                nextActivity.setClass(this, MMSEActivitySelector.getQuestionActivity(survey.getQuestion(questionIndex)));
                 bundle.putInt("question index", questionIndex);
             }else {
-                nextActivity= MMSEActivitySelector.getQuestionActivity(survey.getQuestion(questionIndex+1));
+                nextActivity.setClass(this, MMSEActivitySelector.getQuestionActivity(survey.getQuestion(questionIndex+1)));
                 bundle.putInt("question index", questionIndex+1);
             }
         }else {
-            nextActivity=MMSEActivitySelector.getResultActivity();
+            nextActivity.setClass(this, MMSEActivitySelector.getResultActivity());
         }
-        intent.putExtras(bundle);
-        intent.setComponent(nextActivity);
-        startActivity(intent);
+        nextActivity.putExtras(bundle);
+        startActivity(nextActivity);
     }
 }

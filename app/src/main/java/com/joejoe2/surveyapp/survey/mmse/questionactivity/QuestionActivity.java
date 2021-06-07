@@ -160,20 +160,19 @@ public abstract class QuestionActivity extends AppCompatActivity {
      *go to next question's activity, or result's activity when this is last question
      */
     void toNextQuestion(){
-        ComponentName nextActivity;
+        Intent nextActivity=new Intent();
         if (questionIndex+1<survey.getQuestionNum()){
-            nextActivity= MMSEActivitySelector.getQuestionActivity(survey.getQuestion(questionIndex+1));
+            nextActivity.setClass(this, MMSEActivitySelector.getQuestionActivity(survey.getQuestion(questionIndex+1)));
         }else {
-            nextActivity=MMSEActivitySelector.getResultActivity();
+            nextActivity.setClass(this,MMSEActivitySelector.getResultActivity());
         }
-        Intent intent=new Intent();
+
         Bundle bundle=new Bundle();
         bundle.putString("survey", survey.toString());
         bundle.putInt("question index", questionIndex+1);
         bundle.putBoolean("voice hint", needVoiceHint);
-        intent.putExtras(bundle);
-        intent.setComponent(nextActivity);
-        startActivity(intent);
+        nextActivity.putExtras(bundle);
+        startActivity(nextActivity);
     };
 
     /**

@@ -61,8 +61,10 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACTIVITY_RECOGNITION
         };
+
         ArrayList<String> lackingPermissions=new ArrayList<>();
         for (String permission : requiredPermissions) {
             if(ActivityCompat.checkSelfPermission(MainActivity.this, permission)!=PackageManager.PERMISSION_GRANTED){
@@ -135,15 +137,13 @@ public class MainActivity extends AppCompatActivity {
                         if(success) {
                             try {
                                 Survey survey = new Survey(msg);
-                                ComponentName nextActivity= MMSEActivitySelector.getQuestionActivity(survey.getQuestion(START_FROM_QUESTION));
-                                Intent intent=new Intent();
+                                Intent nextActivity=new Intent().setClass(MainActivity.this,  MMSEActivitySelector.getQuestionActivity(survey.getQuestion(START_FROM_QUESTION)));
                                 Bundle bundle=new Bundle();
                                 bundle.putString("survey", survey.toString());
                                 bundle.putInt("question index", START_FROM_QUESTION);
                                 bundle.putBoolean("voice hint", needVoiceHint);
-                                intent.putExtras(bundle);
-                                intent.setComponent(nextActivity);
-                                startActivity(intent);
+                                nextActivity.putExtras(bundle);
+                                startActivity(nextActivity);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openSpeaker(){
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)/2, 0);
     }
 
     private boolean hasNetWork(){

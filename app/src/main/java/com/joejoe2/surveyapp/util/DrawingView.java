@@ -92,10 +92,11 @@ public class DrawingView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (event.getPointerCount()!=1)return false;
+
         currentX = event.getX();
         currentY = event.getY();
         switch (event.getAction()) {
-
             case MotionEvent.ACTION_DOWN:
                 isDrawing=true;
                 CanvasVertex closest=findClosestVertexInGraph(currentX, currentY);
@@ -128,20 +129,24 @@ public class DrawingView extends View {
                         endY=currentY;
                     }
                     endVertex=addPointToGraph(endX, endY);
-                    if (!graph.containsEdge(startVertex, endVertex))graph.addEdge(startVertex, endVertex);
+                    if (!startVertex.equals(endVertex)&&!graph.containsEdge(startVertex, endVertex))graph.addEdge(startVertex, endVertex);
                     canvas.drawCircle(endX, endY, TOUCH_STROKE_WIDTH, mPaintFinal);
                     canvas.drawLine(startX, startY, endX, endY, mPaintFinal);
                     invalidate();
                 }
                 break;
+
+            default:
+                return false;
         }
 
         return true;
     }
 
-    public void clear(){
+    public void reset(){
         graph=buildEmptySimpleGraph();
         startVertex=null;
+        endVertex=null;
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.MULTIPLY);
     }
 
@@ -179,6 +184,8 @@ public class DrawingView extends View {
     }
 
     private void logGraph(){
+        System.out.println(startVertex);
+        System.out.println(endVertex);
         for (CanvasVertex vertex:graph.vertexSet()){
             System.out.println(vertex);
         }

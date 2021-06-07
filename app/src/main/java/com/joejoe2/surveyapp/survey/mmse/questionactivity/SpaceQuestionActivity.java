@@ -86,7 +86,7 @@ public class SpaceQuestionActivity extends QuestionActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                canvas.clear();
+                canvas.reset();
             }
         });
         completeButton.setOnClickListener(new View.OnClickListener() {

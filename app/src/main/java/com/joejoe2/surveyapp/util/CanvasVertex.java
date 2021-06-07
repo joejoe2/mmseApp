@@ -34,6 +34,6 @@ public class CanvasVertex {
 
     public boolean equals(Object o)
     {
-        return (o instanceof CanvasVertex) && (toString().substring(0, toString().lastIndexOf("-")).equals(o.toString().substring(0, o.toString().lastIndexOf("-"))));
+        return (o instanceof CanvasVertex) && ((CanvasVertex) o).x==x&&((CanvasVertex) o).y==y;
     }
 }
