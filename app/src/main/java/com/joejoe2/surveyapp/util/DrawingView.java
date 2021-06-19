@@ -65,84 +65,6 @@ public class DrawingView extends View {
         graph = buildEmptySimpleGraph();
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        bitmap=Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        canvas=new Canvas(bitmap);
-    }
-
-    @Override
-    protected void onDraw(android.graphics.Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawBitmap(bitmap, 0, 0, mPaint);
-        if (isDrawing){
-            float dx = Math.abs(currentX - startX);
-            float dy = Math.abs(currentY - startY);
-            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                CanvasVertex closest=findClosestVertexInGraph(currentX, currentY);
-                if (graph.vertexSet().size()!=0&&disBetween(currentX, currentY, closest)<AUTO_COMPLETE_RANGE){
-                    canvas.drawLine(startX, startY, closest.getX(), closest.getY(), mPaint);
-                }else {
-                    canvas.drawLine(startX, startY, currentX, currentY, mPaint);
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getPointerCount()!=1)return false;
-
-        currentX = event.getX();
-        currentY = event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                isDrawing=true;
-                CanvasVertex closest=findClosestVertexInGraph(currentX, currentY);
-                if (graph.vertexSet().size()!=0&&disBetween(currentX, currentY, closest)<AUTO_COMPLETE_RANGE){
-                    startX=closest.getX();
-                    startY=closest.getY();
-                }else {
-                    startX = currentX;
-                    startY = currentY;
-                }
-                break;
-
-            case MotionEvent.ACTION_MOVE:
-                invalidate();
-                break;
-
-            case MotionEvent.ACTION_UP:
-                isDrawing=false;
-                float dx = Math.abs(currentX - startX);
-                float dy = Math.abs(currentY - startY);
-                if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                    startVertex=addPointToGraph(startX, startY);
-                    canvas.drawCircle(startX, startY, TOUCH_STROKE_WIDTH, mPaintFinal);
-                    closest = findClosestVertexInGraph(currentX, currentY);
-                    if (graph.vertexSet().size()!=0&&disBetween(currentX, currentY, closest)<AUTO_COMPLETE_RANGE){
-                        endX=closest.getX();
-                        endY=closest.getY();
-                    }else {
-                        endX=currentX;
-                        endY=currentY;
-                    }
-                    endVertex=addPointToGraph(endX, endY);
-                    if (!startVertex.equals(endVertex)&&!graph.containsEdge(startVertex, endVertex))graph.addEdge(startVertex, endVertex);
-                    canvas.drawCircle(endX, endY, TOUCH_STROKE_WIDTH, mPaintFinal);
-                    canvas.drawLine(startX, startY, endX, endY, mPaintFinal);
-                    invalidate();
-                }
-                break;
-
-            default:
-                return false;
-        }
-
-        return true;
-    }
-
     public void reset(){
         graph=buildEmptySimpleGraph();
         startVertex=null;
@@ -154,6 +76,114 @@ public class DrawingView extends View {
         return GraphTypeBuilder
                 .<CanvasVertex, DefaultEdge> undirected().allowingMultipleEdges(false)
                 .allowingSelfLoops(false).edgeClass(DefaultEdge.class).weighted(false).buildGraph();
+    }
+
+    public Graph<CanvasVertex, DefaultEdge> getDrawing(){
+        return graph;
+    }
+
+    private void logGraph(){
+        System.out.println(startVertex);
+        System.out.println(endVertex);
+        for (CanvasVertex vertex:graph.vertexSet()){
+            System.out.println(vertex);
+        }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        bitmap=Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        canvas=new Canvas(bitmap);
+    }
+
+    /**
+     * preview during drawing path when finger is holding on the canvas
+     * @param canvas
+     */
+    @Override
+    protected void onDraw(android.graphics.Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.drawBitmap(bitmap, 0, 0, mPaint);
+        if (isDrawing){
+            if (isFarEnough(currentX - startX, currentY - startY, TOUCH_TOLERANCE)) {
+                CanvasVertex closest=findClosestVertexInGraph(currentX, currentY);
+                //if current pos is close enough to any vertex in graph,
+                //let the preview line connect to the closet vertex
+                if (graph.vertexSet().size()!=0&&disBetween(currentX, currentY, closest)<AUTO_COMPLETE_RANGE){
+                    canvas.drawLine(startX, startY, closest.getX(), closest.getY(), mPaint);
+                }else {
+                    canvas.drawLine(startX, startY, currentX, currentY, mPaint);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (isMultiTouch(event)) {
+            return false;
+        }
+        //update pos
+        currentX = event.getX();
+        currentY = event.getY();
+        //decide start and finish to draw
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startDrawingByFinger();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                releaseDrawingByFinger();
+                break;
+            default:
+                return false;
+        }
+        //update canvas
+        invalidate();
+        return true;
+    }
+
+    private boolean isMultiTouch(MotionEvent event){
+        return event.getPointerCount()!=1;
+    }
+
+    private void startDrawingByFinger(){
+        isDrawing=true;
+        CanvasVertex closest=findClosestVertexInGraph(currentX, currentY);
+        //decide start point of drawing
+        if (graph.vertexSet().size()!=0&&disBetween(currentX, currentY, closest)<AUTO_COMPLETE_RANGE){
+            startX=closest.getX();
+            startY=closest.getY();
+        }else {
+            startX = currentX;
+            startY = currentY;
+        }
+    }
+
+    private void releaseDrawingByFinger(){
+        isDrawing=false;
+        if (isFarEnough(currentX - startX, currentY - startY, TOUCH_TOLERANCE)) {
+            //add start point of drawing to graph and canvas
+            startVertex=addPointToGraph(startX, startY);
+            canvas.drawCircle(startX, startY, TOUCH_STROKE_WIDTH, mPaintFinal);
+            //decide end point of drawing
+            CanvasVertex closest = findClosestVertexInGraph(currentX, currentY);
+            if (graph.vertexSet().size()!=0&&disBetween(currentX, currentY, closest)<AUTO_COMPLETE_RANGE){
+                endX=closest.getX();
+                endY=closest.getY();
+            }else {
+                endX=currentX;
+                endY=currentY;
+            }
+            //add end point of drawing to graph and canvas
+            endVertex=addPointToGraph(endX, endY);
+            if (!startVertex.equals(endVertex)&&!graph.containsEdge(startVertex, endVertex))graph.addEdge(startVertex, endVertex);
+            canvas.drawCircle(endX, endY, TOUCH_STROKE_WIDTH, mPaintFinal);
+            //draw line from start to end
+            canvas.drawLine(startX, startY, endX, endY, mPaintFinal);
+        }
     }
 
     private CanvasVertex addPointToGraph(float x, float y){
@@ -179,15 +209,7 @@ public class DrawingView extends View {
         return (float) Math.sqrt((x-vertex.getX())*(x-vertex.getX())+(y-vertex.getY())*(y-vertex.getY()));
     }
 
-    public Graph<CanvasVertex, DefaultEdge> getDrawing(){
-        return graph;
-    }
-
-    private void logGraph(){
-        System.out.println(startVertex);
-        System.out.println(endVertex);
-        for (CanvasVertex vertex:graph.vertexSet()){
-            System.out.println(vertex);
-        }
+    private boolean isFarEnough(float dx, float dy, float threshold){
+        return Math.abs(dx)>= threshold || Math.abs(dy) >= threshold;
     }
 }

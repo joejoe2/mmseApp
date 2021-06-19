@@ -96,6 +96,11 @@ public class ResultActivity extends AppCompatActivity {
         return res;
     }
 
+    @Override
+    public void onBackPressed() {
+        return;
+    }
+
     /**
      * go back to MainActivity
      */
