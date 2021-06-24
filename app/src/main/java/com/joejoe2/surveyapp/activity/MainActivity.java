@@ -2,7 +2,6 @@ package com.joejoe2.surveyapp.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;

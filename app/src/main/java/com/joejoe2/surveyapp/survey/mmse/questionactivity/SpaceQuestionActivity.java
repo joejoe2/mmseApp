@@ -13,6 +13,7 @@ import com.joejoe2.surveyapp.util.GraphTools;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.traverse.DepthFirstIterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -125,30 +126,36 @@ public class SpaceQuestionActivity extends QuestionActivity {
     }
 
     private boolean isExactTwoPentagonsOverlapQuadratically(List<Graph<CanvasVertex, DefaultEdge>> pentagons){
-        return pentagons.size()==2&&isExactContainOnePointInEach2DEnclosure(pentagons.get(0).vertexSet(), pentagons.get(1).vertexSet());
+        return pentagons.size()==2&&isExactContainOnePointInEach2DEnclosure(pentagons.get(0), pentagons.get(1));
     }
 
-    private boolean isExactContainOnePointInEach2DEnclosure(Set<CanvasVertex> graph1, Set<CanvasVertex> graph2){
+    private boolean isExactContainOnePointInEach2DEnclosure(Graph<CanvasVertex, DefaultEdge> graph1, Graph<CanvasVertex, DefaultEdge> graph2){
         int in1=0, in2=0;
         ArrayList<float[]> poly1=new ArrayList<>();
         ArrayList<float[]> poly2=new ArrayList<>();
-        for (CanvasVertex vertex:graph1){
+
+        DepthFirstIterator<CanvasVertex, DefaultEdge> depthFirstIterator1=new DepthFirstIterator<CanvasVertex, DefaultEdge>(graph1);
+        DepthFirstIterator<CanvasVertex, DefaultEdge> depthFirstIterator2=new DepthFirstIterator<CanvasVertex, DefaultEdge>(graph2);
+        while (depthFirstIterator1.hasNext()){
+            CanvasVertex vertex =  depthFirstIterator1.next();
             poly1.add(new float[]{vertex.getX(), vertex.getY()});
         }
-        for (CanvasVertex vertex:graph2){
+        while (depthFirstIterator2.hasNext()){
+            CanvasVertex vertex = depthFirstIterator2.next();
             poly2.add(new float[]{vertex.getX(), vertex.getY()});
         }
 
-        for (CanvasVertex vertex:graph1){
-            if(GraphTools.isPointInPolygons(vertex.getX(), vertex.getY(), poly2)){
+        for (float[] vertexPos:poly1){
+            if(GraphTools.isPointInPolygons(vertexPos[0], vertexPos[1], poly2)){
                 in2++;
             }
         }
-        for (CanvasVertex vertex:graph2){
-            if(GraphTools.isPointInPolygons(vertex.getX(), vertex.getY(), poly1)){
+        for (float[] vertexPos:poly2){
+            if(GraphTools.isPointInPolygons(vertexPos[0], vertexPos[1], poly1)){
                 in1++;
             }
         }
+
         return in1==1&&in2==1;
     }
 }
